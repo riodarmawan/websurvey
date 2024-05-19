@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Form</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .form-section {
+      margin-bottom: 20px;
+    }
+    .pagination a.active {
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Survey Form</h1>
+    <form id="surveyForm" method="post" action="/save-question-data">
+      <div id="questionContainer"></div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination"></ul>
+      </nav>
+      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+  </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+const surveyData = {
+      "pilgub1": [
+        {
+          "pertanyaan": "Apa pendapat Anda tentang infrastruktur di wilayah ini?",
+          "option": [
+            { "radiobutton": "Baik" },
+            { "radiobutton": "Cukup" },
+            { "radiobutton": "Kurang" }
+          ]
+        },
+        {
+          "pertanyaan": "Apakah Anda setuju dengan program pendidikan yang diusulkan oleh calon gubernur?",
+          "option": [
+            { "checkbox": "Setuju" },
+            { "checkbox": "Tidak Setuju" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih calon gubernur yang menurut Anda memiliki visi yang paling baik untuk wilayah ini.",
+          "option": [
+    { "select": ["Calon A", "Calon B", "Calon C"] } // <--- Buat ini sebagai array
+  ]
+        },
+        {
+          "pertanyaan": "Apakah Anda merasa aman dan nyaman dengan keamanan di wilayah ini?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Jika ada satu hal yang ingin Anda ubah dalam wilayah ini, apa itu?",
+          "option": [
+            { "textarea": "" }
+          ]
+        },
+        {
+          "pertanyaan": "Apakah Anda mengalami perbaikan infrastruktur dalam dua tahun terakhir?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih semua calon gubernur yang menurut Anda memiliki kemampuan untuk meningkatkan perekonomian wilayah ini.",
+          "option": [
+            { "checkbox": "Calon A" },
+            { "checkbox": "Calon B" },
+            { "checkbox": "Calon C" }
+          ]
+        },
+        {
+          "pertanyaan": "Masukkan resume Anda sebagai bahan pertimbangan dalam pemilihan calon gubernur.",
+          "option": [
+            { "file": "" }
+          ]
+        },
+        {
+          "pertanyaan": "Berikan skor untuk kinerja calon gubernur saat ini dalam skala 1-10.",
+          "option": [
+            { "radiobutton": "1" },
+            { "radiobutton": "2" },
+            { "radiobutton": "3" },
+            { "radiobutton": "4" },
+            { "radiobutton": "5" },
+            { "radiobutton": "6" },
+            { "radiobutton": "7" },
+            { "radiobutton": "8" },
+            { "radiobutton": "9" },
+            { "radiobutton": "10" }
+          ]
+        },
+        {
+          "pertanyaan": "Apakah Anda setuju dengan kebijakan lingkungan yang diusulkan oleh calon gubernur?",
+          "option": [
+            { "checkbox": "Setuju" },
+            { "checkbox": "Tidak Setuju" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih calon gubernur yang menurut Anda memiliki komitmen yang paling tinggi untuk memajukan pendidikan.",
+          "option": [
+    { "select": ["Calon A", "Calon B", "Calon C"] } // <--- Buat ini sebagai array
+  ]
+        },
+        {
+          "pertanyaan": "Apakah Anda puas dengan pelayanan kesehatan di wilayah ini?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Jika Anda memilih salah satu calon gubernur, apa yang Anda harapkan dari mereka dalam 5 tahun ke depan?",
+          "option": [
+            { "textarea": "" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih semua isu yang menurut Anda paling penting dalam pemilihan calon gubernur.",
+          "option": [
+            { "checkbox": "Infrastruktur" },
+            { "checkbox": "Pendidikan" },
+            { "checkbox": "Kesehatan" },
+            { "checkbox": "Lingkungan" },
+            { "checkbox": "Ekonomi" }
+          ]
+        },
+        {
+          "pertanyaan": "Bagaimana pendapat Anda tentang kebijakan pajak yang diusulkan oleh calon gubernur?",
+          "option": [
+            { "radiobutton": "Setuju" },
+            { "radiobutton": "Tidak Setuju" }
+          ]
+        },
+        {
+          "pertanyaan": "Apakah Anda berpartisipasi dalam program-program sosial yang diadakan oleh pemerintah daerah?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Menurut Anda, apakah calon gubernur saat ini telah mengatasi masalah-masalah kritis dalam wilayah ini?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Belum" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih semua calon gubernur yang menurut Anda memiliki program untuk memperbaiki transportasi umum.",
+          "option": [
+            { "checkbox": "Calon A" },
+            { "checkbox": "Calon B" },
+            { "checkbox": "Calon C" }
+          ]
+        },
+        {
+          "pertanyaan": "Bagaimana pendapat Anda tentang kebijakan regulasi yang diusulkan oleh calon gubernur?",
+          "option": [
+            { "radiobutton": "Setuju" },
+            { "radiobutton": "Tidak Setuju" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih calon gubernur yang menurut Anda memiliki komitmen terhadap keberlanjutan lingkungan.",
+          "option": [
+    { "select": ["Calon A", "Calon B", "Calon C"] } // <--- Buat ini sebagai array
+  ]
+        },
+        {
+          "pertanyaan": "Apakah Anda merasa cukup terlibat dalam proses pengambilan keputusan di wilayah ini?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Jika Anda diberi kesempatan, apa yang akan Anda lakukan untuk meningkatkan perekonomian lokal?",
+          "option": [
+            { "textarea": "" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih semua isu yang menurut Anda harus menjadi prioritas utama bagi calon gubernur.",
+          "option": [
+            { "checkbox": "Pemberantasan Korupsi" },
+            { "checkbox": "Peningkatan Kesejahteraan Masyarakat" },
+            { "checkbox": "Pengembangan Infrastruktur" },
+            { "checkbox": "Perlindungan Lingkungan" },
+            { "checkbox": "Peningkatan Akses Pendidikan" }
+          ]
+        },
+        {
+          "pertanyaan": "Apakah Anda memiliki akses yang memadai ke fasilitas umum di wilayah ini?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih semua calon gubernur yang menurut Anda memiliki rencana untuk mengatasi kemacetan lalu lintas.",
+          "option": [
+    { "select": ["Calon A", "Calon B", "Calon C"] } // <--- Buat ini sebagai array
+  ]
+        },
+        {
+          "pertanyaan": "Bagaimana penilaian Anda terhadap ketersediaan pekerjaan di wilayah ini?",
+          "option": [
+            { "radiobutton": "Cukup" },
+            { "radiobutton": "Kurang" },
+            { "radiobutton": "Baik" }
+          ]
+        },
+        {
+          "pertanyaan": "Apakah Anda merasa perubahan iklim telah mempengaruhi wilayah ini secara signifikan?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        },
+        {
+          "pertanyaan": "Pilih calon gubernur yang menurut Anda memiliki program terbaik untuk mengatasi kemiskinan.",
+          "option": [
+    { "select": ["Calon A", "Calon B", "Calon C"] }
+  ]
+        },
+        {
+          "pertanyaan": "Apakah Anda puas dengan sistem transportasi umum di wilayah ini?",
+          "option": [
+            { "radiobutton": "Ya" },
+            { "radiobutton": "Tidak" }
+          ]
+        }
+      ]
+    };
+  const form = document.getElementById('surveyForm');
+  let currentPage = 1;
+  const questionsPerPage = 5; // Adjust based on how many questions per page you want
+  const totalPages = Math.ceil(surveyData.pilgub1.length / questionsPerPage);
+  
+  function createPagination(totalPages) {
+    const pagination = document.querySelector('.pagination');
+    pagination.innerHTML = ''; // Clear any existing pagination
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = "#";
+      a.textContent = i;
+      if (i === currentPage) {
+        a.classList.add('active');
+      }
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        updateFormData(); // Save form data before switching page
+        currentPage = i;
+        updatePagination(a);
+        displayQuestions(surveyData.pilgub1, currentPage);
+      });
+      li.appendChild(a);
+      pagination.appendChild(li);
+    }
+  }
+
+  function updatePagination(activeLink) {
+    const activeElement = document.querySelector('.pagination a.active');
+    if (activeElement) {
+      activeElement.classList.remove('active');
+    }
+    activeLink.classList.add('active');
+  }
+
+  function displayQuestions(questions, page) {
+    const formSection = document.getElementById('questionContainer');
+    formSection.innerHTML = ''; // Clear the form for new questions
+    const start = (page - 1) * questionsPerPage;
+    const end = Math.min(start + questionsPerPage, questions.length);
+    const paginatedQuestions = questions.slice(start, end);
+    paginatedQuestions.forEach((item, index) => {
+      const questionDiv = document.createElement('div');
+      questionDiv.classList.add('form-section');
+      const questionLabel = document.createElement('label');
+      questionLabel.innerHTML = `${start + index + 1}. ${item.pertanyaan}`;
+      questionDiv.appendChild(questionLabel);
+
+      item.option.forEach(option => {
+        const inputWrapper = document.createElement('div');
+        inputWrapper.classList.add('form-check');
+
+        let inputElement;
+        let labelElement = document.createElement('label');
+        labelElement.classList.add('form-check-label');
+
+        if (option.radiobutton || option.checkbox) {
+          inputElement = document.createElement('input');
+          inputElement.type = option.radiobutton ? 'radio' : 'checkbox';
+          inputElement.name = item.pertanyaan;
+          inputElement.value = option.radiobutton || option.checkbox;
+          inputElement.classList.add('form-check-input');
+          labelElement.appendChild(inputElement);
+          labelElement.innerHTML += option.radiobutton || option.checkbox;
+          inputWrapper.appendChild(labelElement);
+        } else if (option.select) {
+          inputElement = document.createElement('select');
+          inputElement.name = item.pertanyaan;
+          inputElement.classList.add('form-control');
+          option.select.forEach(selectOption => {
+            let optionElem = document.createElement('option');
+            optionElem.value = selectOption;
+            optionElem.textContent = selectOption;
+            inputElement.appendChild(optionElem);
+          });
+          inputWrapper.appendChild(inputElement);
+        } else if (option.textarea !== undefined) {
+          inputElement = document.createElement('textarea');
+          inputElement.classList.add('form-control');
+          inputElement.name = item.pertanyaan;
+          inputWrapper.appendChild(inputElement);
+        } else if (option.file !== undefined) {
+          inputElement = document.createElement('input');
+          inputElement.type = 'file';
+          inputElement.classList.add('form-control-file');
+          inputElement.name = item.pertanyaan;
+          inputWrapper.appendChild(inputElement);
+        }
+
+        questionDiv.appendChild(inputWrapper);
+      });
+
+      formSection.appendChild(questionDiv);
+    });
+    restoreFormData(); // Load the form data from cookies after displaying questions
+  }
+
+  function restoreFormData() {
+    const cookies = document.cookie.split('; ');
+    const formDataCookie = cookies.find(row => row.startsWith('formData='));
+    if (formDataCookie) {
+      const formDataJSON = formDataCookie.split('=')[1];
+      const formDataObject = JSON.parse(decodeURIComponent(formDataJSON));
+      Object.entries(formDataObject).forEach(([key, value]) => {
+        const element = form.elements[key];
+        if (element) {
+          if (element.type === 'checkbox' || element.type === 'radio') {
+            element.checked = (value === 'true');
+          } else {
+            element.value = value;
+          }
+        }
+      });
+    }
+  }
+
+  function updateFormData() {
+    const formData = new FormData(form);
+    const formDataObject = {};
+    formData.forEach((value, key) => {
+      const element = form.elements[key];
+      if (element.type === 'checkbox' || element.type === 'radio') {
+        formDataObject[key] = element.checked.toString();
+      } else {
+        formDataObject[key] = value;
+      }
+    });
+    document.cookie = `formData=${encodeURIComponent(JSON.stringify(formDataObject))};path=/;max-age=86400`;
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    updateFormData();
+    // Submit the form with updated data
+    form.submit();
+  });
+
+  form.addEventListener('change', updateFormData);
+  displayQuestions(surveyData.pilgub1, currentPage);
+  createPagination(totalPages);
+});
+
+
+
+  </script>
+</body>
+</html>
