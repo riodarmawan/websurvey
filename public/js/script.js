@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     fetchQuestions();
-
+    console.log("coba ini dan hapus");
     function fetchQuestions() {
         console.log("Fetching questions for survey ID:", surveyId);
         fetch(`/apiquestions/${surveyId}`)
