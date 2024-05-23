@@ -1,9 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const multer  = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+
+
 const passport = require('passport');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/') // Pastikan folder 'uploads' sudah ada
+    },
+    filename: function(req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix + file.originalname)
+    }
+});
+const upload = multer({ storage: storage });
 
 const viewController = require('../controllers/viewController');
 const dataController = require('../controllers/dataController');
@@ -16,7 +29,6 @@ router.get('/admin', ensureAdmin, fetchDatabases, viewController.renderIndex);
 router.post('/readData', fetchDatabases, viewController.renderReadData);
 router.get('/createForm', fetchDatabases, viewController.renderCreateForm);
 router.post('/showCollections', fetchDatabases, dataController.showCollections);
-router.post('/uploadFile', upload.single('fileInput'), fileController.uploadFile);
 router.get('/', back, viewController.renderLogin);
 router.post('/register', dataController.createRegister);
 
@@ -40,7 +52,11 @@ router.post('/', (req, res, next) => {
 router.get('/user', ensureUser,viewController.renderUser);
 router.get('/apiquestions/:id', viewController.ApiQuestions);
 router.get('/questions/:id', questions, viewController.renderQuestions);
-router.post('/save-question-data', ensureAuthenticated,saveQuestionData );
+router.post('/save-question-data',  upload.single('file'), ensureAuthenticated,(req,res)=>{
+    console.log(req.body); // Ini adalah data form
+    console.log(req.file); // Ini adalah data file
+
+} );
 
 router.get('/logout', (req, res) => {
     req.logout((err) => {
